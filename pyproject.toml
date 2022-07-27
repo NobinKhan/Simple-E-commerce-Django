@@ -1,0 +1,19 @@
+[tool.poetry]
+name = "ecom"
+version = "0.1.0"
+description = ""
+authors = ["sayedmehedi <sayedmehedi456@gmail.com>"]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+Django = "^4.0.6"
+Pillow = "^9.2.0"
+sslcommerz-lib = "^1.0"
+
+[tool.poetry.dev-dependencies]
+pytest = "^5.2"
+django-debug-toolbar = "^3.5.0"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"

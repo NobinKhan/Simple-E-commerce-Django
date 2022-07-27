@@ -1,0 +1,72 @@
+{% extends 'base.html' %}
+
+{% load humanize %}
+{% load static %}
+{% block csslink %}
+<link rel="stylesheet" href="{% static 'css/card.css' %}">
+{% endblock %}
+{% block title %} | Welcome {% endblock %}
+
+{% block content %}
+
+<!-- Alerts -->
+{% include 'partials/_alerts.html' %}
+
+<!-- Listings -->
+<section id="listings" class="py-4" style="background: #e2eaef;">
+{% if products %}
+{% for product in products %}
+  <div class="card ml-4">
+    <figure>
+      <img src="{{ product.image.url }}" alt="t-shirt">
+    </figure>
+    <section class="details">
+      <div class="min-details">
+        <h1>{{ product.name }}</h1>
+        <h1 class="price">${{ product.new_price }} <strike>${{ product.old_price }}</strike></h1>
+      </div>
+  
+      <div class="options">
+        <div class="options-size">
+          <h1>sizes</h1>
+          <ul>
+            <li>xs</li>
+            <li>s</li>
+            <li>m</li>
+            <li>l</li>
+            <li>xl</li>
+          </ul>
+        </div>
+  
+        <div class="options-colors">
+          <h1>colors</h1>
+          <ul>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+          </ul>
+        </div>
+      </div>
+      <form action="{% url 'cart' %}" method="post">
+        {% csrf_token %}
+        <input type="hidden" name="product_id" value="{{product.id}}">
+        <button type="submit" class="btn btn-primary">Add To Cart</button>
+      </form>
+    </section>
+  </div>
+        {% endfor %}
+        {% else %}
+        <div class="text-center col-md-12">
+          <img src="{% static 'img/noProduct.png' %}" alt="No Product Found"
+            style="border-radius: 8px; width: 20%; margin-top: 15px;">
+        </div>
+        {% endif %}
+
+      </div>
+    </div>
+</section>
+
+
+{% endblock %}

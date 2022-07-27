@@ -1,0 +1,78 @@
+{% extends 'base.html' %}
+{% block title %}View Cart
+{% endblock title %}
+{% block content %}
+
+<div id="cart-container">
+  <!-- Breadcrumb -->
+  <section id="bc" class="mt-3">
+    <div class="container">
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item">
+            <a href="{% url 'index' %}">
+              <i class="fas fa-home"></i> Home</a>
+          </li>
+          <li class="breadcrumb-item active">View Cart</li>
+        </ol>
+      </nav>
+    </div>
+  </section>
+
+  <!-- Alerts -->
+  {% include 'partials/_alerts.html' %}
+
+
+
+  <hr>
+  <h3 class="text-success" style="text-align: center;">Cart Details</h3>
+  <table class="table table-striped ml-3 mb-3" style="overflow-x: hidden;">
+    <thead style="overflow-x: hidden;">
+      <tr style="overflow-x: hidden;">
+        <th style="overflow-x: hidden;" scope="col">#</th>
+        <th style="overflow-x: hidden;" scope="col">Product</th>
+        <th style="overflow-x: hidden;" scope="col">Quantity</th>
+        <th style="overflow-x: hidden;" scope="col">Product Status</th>
+        <th style="overflow-x: hidden;" scope="col">Price Per Item</th>
+        <th style="overflow-x: hidden;" scope="col">Price</th>
+      </tr>
+    </thead>
+    <tbody style="overflow-x: hidden;">
+      {% for item in items %}
+      <tr style="overflow-x: hidden;">
+        <form style="overflow-x: hidden;" action="{% url 'cart' %}" method="POST">
+          {% csrf_token %}
+          <td style="overflow-x: hidden;">{{ forloop.counter }}</td>
+          <td style="overflow-x: hidden;">{{ item.product.name }}</td>
+          <td style="overflow-x: hidden;">{{ item.quantity }}</td>
+          {% if item.product.status %}
+          <td style="overflow-x: hidden;">Available</td>
+          <td style="overflow-x: hidden;">{{ item.product.new_price }}</td>
+          <td style="overflow-x: hidden;">{{ item.get_price }}</td>
+          <td style="overflow-x: hidden;">
+            <button type="submit" class="btn btn-danger">Cancel</button>
+            <input type="hidden" name="deleteproductid" value="{{item.product.id}}">
+          </td>
+          {% else %}
+          <td style="overflow-x: hidden;">Stock Out</td>
+          <td style="overflow-x: hidden;">N/A</td>
+          <td style="overflow-x: hidden;">N/A</td>
+          {% endif %}
+
+        </form>
+
+      </tr>
+      {% endfor %}
+  </table>
+  {% if cart.get_total_price %}
+  <div class="ml-5">
+    <h1>Total Amount = {{ cart.get_total_price }}</h1>
+    <form action="{% url 'orders' %}" method="POST">
+      {% csrf_token %}
+      <input type="hidden" name="cart_id" value="{{ cart.id }}">
+      <button type="submit" class="btn btn-primary ml-5">Make Order</button>
+    </form>
+  </div>
+  {% endif %}
+</div>
+{% endblock content %}
